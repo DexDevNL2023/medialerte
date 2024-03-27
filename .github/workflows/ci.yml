@@ -39,6 +39,11 @@ jobs:
     needs: [build]
 
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: target/
       - run:
          ls 
       - name: Set up FTP environment
