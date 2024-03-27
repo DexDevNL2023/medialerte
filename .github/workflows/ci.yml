@@ -27,7 +27,11 @@ jobs:
         run:  |
             mvn clean package 
             ls
-
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+              name: build-artifact
+              path: target/
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -35,13 +39,28 @@ jobs:
     needs: [build]
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: target/
+      - run:
+         ls 
       - name: Set up FTP environment
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{secrets.FTP_SERVER}}
           username: ${{secrets.FTP_USERNAME}}
           password: ${{secrets.FTP_PASSWORD}}
-          local-dir: target
+          local-dir: ./target/
+      - name: Run JAR on Hostinger
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+            host: ${{ secrets.HOSTINGER_HOST }}
+            username: ${{ secrets.HOSTINGER_USERNAME }}
+            password: ${{ secrets.HOSTINGER_PASSWORD }}
+            port: ${{ secrets.SSH_PORT }}
+            script: |
+              whoami
+              ls
+              
