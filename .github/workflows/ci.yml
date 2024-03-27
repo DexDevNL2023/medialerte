@@ -25,7 +25,7 @@ jobs:
          echo "Version de Java spécifiée dans le flux de travail : $INPUT_JAVA_VERSION"
       - name: Build with Maven
         run:  |
-            mvn -B package --file pome.xml
+            mvn -B package --file pom.xml
             ls
 
   deploy:
