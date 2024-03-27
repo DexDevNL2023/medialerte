@@ -56,11 +56,12 @@ jobs:
       - name: Run JAR on Hostinger
         uses: appleboy/ssh-action@v1.0.3
         with:
-            host: ${{ secrets.HOSTINGER_HOST }}
-            username: ${{ secrets.HOSTINGER_USERNAME }}
-            password: ${{ secrets.HOSTINGER_PASSWORD }}
-            port: ${{ secrets.SSH_PORT }}
+            host: itgrafikadmin.fun
+            username: u877916646
+            password: wWKq7mfXrCWGMS38@
+            port: 65002
             script: |
-              whoami
-              ls
+              cd public_html/medialert
+              java -jar alert-0.0.1-SNAPSHOT.jar
+
               
