@@ -1,11 +1,10 @@
 package com.medi.alert.service;
 
-import com.medi.alert.dto.EmploiTempsDto;
 import com.medi.alert.entity.Alerte;
 import com.medi.alert.entity.EmploiTemps;
+import com.medi.alert.exceptions.ResourceNotFoundException;
 import com.medi.alert.repository.AlerteRepository;
 import com.medi.alert.repository.EmploiTempsRepository;
-import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,17 +23,17 @@ public class AlerteService {
         return alerteRepository.findAll();
     }
 
-    public void addAlerte(EmploiTempsDto dto) {
+    public void addAlerte(EmploiTemps dto) {
         Alerte alerte = new Alerte();
         EmploiTemps emploiTemps = new EmploiTemps();
-        emploiTemps.setNom(dto.getInfirmiere());
+        emploiTemps.setInfirmiere(dto.getInfirmiere());
         emploiTemps.setDateDebut(dto.getDateDebut());
         emploiTemps.setDateFin(dto.getDateFin());
         alerte.setEmploiTemps(emploiTemps);
         alerteRepository.save(alerte);
     }
 
-    public void updateAlerte(EmploiTempsDto dto) {
+    public void updateAlerte(EmploiTemps dto) {
         Alerte alerte = alerteRepository.findByEmploiTempsId(dto.getId());
         if (alerte != null) {
             EmploiTemps emploiTemps = emploiTempsRepository.findById(dto.getId()).orElseThrow(
