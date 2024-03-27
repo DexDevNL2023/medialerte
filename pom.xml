@@ -124,6 +124,12 @@
 			<artifactId>webjars-locator-core</artifactId>
 			<version>0.55</version>
 		</dependency>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.1.0</version>
+		</plugin>
+
 	</dependencies>
 
 	<build>
