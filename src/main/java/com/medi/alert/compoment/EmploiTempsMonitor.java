@@ -12,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @EnableScheduling
@@ -33,7 +35,12 @@ public class EmploiTempsMonitor {
     @Transactional
     public void checkModifications() {
         try {
-            List<EmploiTemps> currentData = emploiTempsService.getAllEmploiTemps();
+            CompletableFuture<List<EmploiTemps>> future = emploiTempsService.getAllEmploiTemps();
+
+            // Attendre que la tâche asynchrone se termine avec une limite de temps de 10 secondes
+            List<EmploiTemps> currentData = future.get(10, TimeUnit.SECONDS);
+
+            // Utilisez currentData comme d'habitude
             List<Alerte> previousData = alerteService.getAllAlertes();
 
             // Vérifier les nouvelles données et les modifications

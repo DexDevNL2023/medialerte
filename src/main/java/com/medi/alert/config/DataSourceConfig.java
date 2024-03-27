@@ -36,9 +36,9 @@ public class DataSourceConfig {
         try {
             return DataSourceBuilder.create()
                     .driverClassName("com.mysql.cj.jdbc.Driver")
-                    .url("jdbc:mysql://192.168.1.40:3306/medialert?useUnicode=yes&characterEncoding=UTF-8&characterSetResults=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
-                    .username("root")
-                    .password("2+2Font4")
+                    .url("jdbc:mysql://localhost:3306/medialert?useUnicode=yes&characterEncoding=UTF-8&characterSetResults=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC")
+                    .username("medialert")
+                    .password("medialert")
                     .type(com.zaxxer.hikari.HikariDataSource.class)
                     .build();
         } catch (Exception e) {

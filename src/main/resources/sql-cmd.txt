@@ -1,0 +1,15 @@
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '2+2Font4';
+CREATE USER 'medialert'@'localhost' IDENTIFIED WITH authentication_plugin BY 'medialert';
+CREATE USER 'medialert'@'localhost' IDENTIFIED BY 'medialert';
+CREATE USER 'medialert'@'%' IDENTIFIED BY 'medialert';
+GRANT ALL PRIVILEGES ON *.* TO 'medialert'@'localhost';
+GRANT ALL PRIVILEGES ON *.* TO 'medialert'@'%';
+FLUSH PRIVILEGES;
+CREATE DATABASE medialert CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE emploi_temps (id INT AUTO_INCREMENT PRIMARY KEY, infirmiere VARCHAR(255), date_debut TIMESTAMP, date_fin TIMESTAMP);
+CREATE TABLE medialert.emploi_temps (id INT AUTO_INCREMENT PRIMARY KEY, infirmiere VARCHAR(255), date_debut TIMESTAMP, date_fin TIMESTAMP);
+INSERT INTO medialert.emploi_temps (infirmiere, date_debut, date_fin) VALUES ('Infirmiere 1', '2024-03-27 08:00:00', '2024-03-27 12:00:00'), ('Infirmiere 2', '2024-03-27 13:00:00', '2024-03-27 17:00:00'), ('Infirmiere 3', '2024-03-28 09:00:00', '2024-03-28 13:00:00');
+USE medialert;
+SELECT * FROM emploi_temps;
+QUIT;
