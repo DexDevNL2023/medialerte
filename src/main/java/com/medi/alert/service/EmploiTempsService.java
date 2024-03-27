@@ -1,48 +1,41 @@
 package com.medi.alert.service;
 
 import com.medi.alert.entity.EmploiTemps;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.sql.DataSource;
 import java.util.List;
-
-//@Service
-//public class EmploiTempsService {
-//
-//    private final JdbcTemplate jdbcTemplate;
-//
-//    public EmploiTempsService() {
-//        this.jdbcTemplate = new JdbcTemplate(mysqlDataSource());
-//    }
-//
-//    // Méthode pour récupérer tous les emplois de temps depuis la base de données
-//    public List<EmploiTemps> getAllEmploiTemps() {
-//        String sql = "SELECT * FROM emploi_temps";
-//        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-//            EmploiTemps emploiTemps = new EmploiTemps();
-//            emploiTemps.setId(rs.getLong("id"));
-//            emploiTemps.setInfirmiere(rs.getString("infirmiere"));
-//            emploiTemps.setDateDebut(rs.getDate("date_debut"));
-//            emploiTemps.setDateFin(rs.getDate("date_fin"));
-//            return emploiTemps;
-//        });
-//    }
-//    @Bean
-//    public DataSource mysqlDataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        dataSource.setUrl("jdbc:mysql://192.168.1.40:3306/medialert");
-//        dataSource.setUsername("root");
-//        dataSource.setPassword("2+2Font4");
-//        return dataSource;
-//    }
-//}
 
 @Service
 public class EmploiTempsService {
 
+    private final DataSource sqlDataSource;
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public EmploiTempsService(@Qualifier("sqlDataSource") DataSource sqlDataSource) {
+        this.sqlDataSource = sqlDataSource;
+    }
+
+    @PostConstruct
+    private void initializeJdbcTemplate() {
+        this.jdbcTemplate = new JdbcTemplate(sqlDataSource);
+    }
+
     // Méthode pour récupérer tous les emplois de temps depuis la base de données
     public List<EmploiTemps> getAllEmploiTemps() {
-        return new ArrayList<>();
+        String sql = "SELECT * FROM emploi_temps";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            EmploiTemps emploiTemps = new EmploiTemps();
+            emploiTemps.setId(rs.getLong("id"));
+            emploiTemps.setInfirmiere(rs.getString("infirmiere"));
+            emploiTemps.setDateDebut(rs.getDate("date_debut"));
+            emploiTemps.setDateFin(rs.getDate("date_fin"));
+            return emploiTemps;
+        });
     }
 }
