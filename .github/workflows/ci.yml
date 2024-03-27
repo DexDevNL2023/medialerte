@@ -27,7 +27,11 @@ jobs:
         run:  |
             mvn clean package 
             ls
-
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+              name: build-artifact
+              path: target/
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
