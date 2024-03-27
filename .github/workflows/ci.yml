@@ -18,14 +18,14 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 17
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'maven'
       - name: Afficher la version de Java
         run: |
          echo "Version de Java spécifiée dans le flux de travail : $INPUT_JAVA_VERSION"
       - name: Build with Maven
         run:  |
-            mvn clean install 
+            mvn -B package --file pome.xml
             ls
 
   deploy:
