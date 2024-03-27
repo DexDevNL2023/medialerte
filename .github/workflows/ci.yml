@@ -62,6 +62,6 @@ jobs:
             port: ${{ secrets.SSH_PORT }}
             script: |
               cd public_html/medialert
-              java -jar target/alert-0.0.1-SNAPSHOT.jar
+              java -jar alert-0.0.1-SNAPSHOT.jar
 
               
