@@ -56,7 +56,7 @@ jobs:
       - name: Run JAR on Hostinger
         uses: appleboy/ssh-action@v1.0.3
         with:
-            host: 141.136.33.32
+            host: itgrafikadmin.fun
             username: u877916646
             password: wWKq7mfXrCWGMS38@
             port: 65002
