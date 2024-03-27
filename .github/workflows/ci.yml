@@ -54,12 +54,13 @@ jobs:
           password: ${{secrets.FTP_PASSWORD}}
           local-dir: ./target/
       - name: Run JAR on Hostinger
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
             host: ${{ secrets.HOSTINGER_HOST }}
             username: ${{ secrets.HOSTINGER_USERNAME }}
             password: ${{ secrets.HOSTINGER_PASSWORD }}
             port: ${{ secrets.SSH_PORT }}
             script: |
+              whoami
               ls
               
