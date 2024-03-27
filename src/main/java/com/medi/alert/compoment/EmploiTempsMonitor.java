@@ -2,8 +2,8 @@ package com.medi.alert.compoment;
 
 import com.medi.alert.dto.EmploiTempsDto;
 import com.medi.alert.entity.Alerte;
-import com.medi.alert.service.EmailService;
 import com.medi.alert.service.AlerteService;
+import com.medi.alert.service.EmailService;
 import com.medi.alert.service.EmploiTempsService;
 import com.medi.alert.service.SmsService;
 import jakarta.transaction.Transactional;
@@ -29,7 +29,7 @@ public class EmploiTempsMonitor {
         this.emploiTempsService = emploiTempsService;
     }
 
-    @Scheduled(fixedRate = 60000) // Vérifier toutes les 60 secondes
+    @Scheduled(fixedRate = 30000) // Vérifier toutes les 30 secondes
     @Transactional
     public void checkModifications() {
         List<EmploiTempsDto> currentData = emploiTempsService.getAllEmploiTemps();
