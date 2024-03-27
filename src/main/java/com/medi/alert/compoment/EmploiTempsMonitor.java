@@ -1,7 +1,7 @@
 package com.medi.alert.compoment;
 
-import com.medi.alert.dto.EmploiTempsDto;
 import com.medi.alert.entity.Alerte;
+import com.medi.alert.entity.EmploiTemps;
 import com.medi.alert.service.AlerteService;
 import com.medi.alert.service.EmailService;
 import com.medi.alert.service.EmploiTempsService;
@@ -17,13 +17,13 @@ import java.util.List;
 @EnableScheduling
 public class EmploiTempsMonitor {
 
-    private final AlerteService emploiTempsHistoryService;
+    private final AlerteService alerteService;
     private final EmailService emailService;
     private final SmsService smsService;
     private final EmploiTempsService emploiTempsService;
 
-    public EmploiTempsMonitor(AlerteService emploiTempsHistoryService, EmailService emailService, SmsService smsService, EmploiTempsService emploiTempsService) {
-        this.emploiTempsHistoryService = emploiTempsHistoryService;
+    public EmploiTempsMonitor(AlerteService alerteService, EmailService emailService, SmsService smsService, EmploiTempsService emploiTempsService) {
+        this.alerteService = alerteService;
         this.emailService = emailService;
         this.smsService = smsService;
         this.emploiTempsService = emploiTempsService;
@@ -32,21 +32,27 @@ public class EmploiTempsMonitor {
     @Scheduled(fixedRate = 30000) // Vérifier toutes les 30 secondes
     @Transactional
     public void checkModifications() {
-        List<EmploiTempsDto> currentData = emploiTempsService.getAllEmploiTemps();
-        List<Alerte> previousData = emploiTempsHistoryService.getAllAlertes();
+        try {
+            List<EmploiTemps> currentData = emploiTempsService.getAllEmploiTemps();
+            List<Alerte> previousData = alerteService.getAllAlertes();
 
-        // Vérifier les nouvelles données et les modifications
-        for (EmploiTempsDto currentEmploiTempsDto : currentData) {
-            Alerte previousEmploiTemps = findAlerteById(previousData, currentEmploiTempsDto.getId());
-            if (previousEmploiTemps == null) {
-                // Donnée nouvelle
-                emploiTempsHistoryService.addAlerte(currentEmploiTempsDto);
-                notifyModification(currentEmploiTempsDto);
-            } else if (!currentEmploiTempsDto.equals(previousEmploiTemps.getEmploiTemps())) {
-                // Modification détectée
-                emploiTempsHistoryService.updateAlerte(currentEmploiTempsDto);
-                notifyModification(currentEmploiTempsDto);
+            // Vérifier les nouvelles données et les modifications
+            for (EmploiTemps currentEmploiTemps : currentData) {
+                Alerte previousEmploiTemps = findAlerteById(previousData, currentEmploiTemps.getId());
+                if (previousEmploiTemps == null) {
+                    // Donnée nouvelle
+                    alerteService.addAlerte(currentEmploiTemps);
+                    notifyModification(currentEmploiTemps);
+                } else if (!currentEmploiTemps.equals(previousEmploiTemps.getEmploiTemps())) {
+                    // Modification détectée
+                    alerteService.updateAlerte(currentEmploiTemps);
+                    notifyModification(currentEmploiTemps);
+                }
             }
+        } catch (Exception e) {
+            // Gérer l'exception sans arrêter l'application
+            System.err.println("Une erreur s'est produite lors de la vérification des modifications : " + e.getMessage());
+            // Vous pouvez choisir de journaliser l'erreur ou d'envoyer une notification par email ou SMS
         }
     }
 
@@ -61,7 +67,7 @@ public class EmploiTempsMonitor {
     }
 
     // Méthode pour notifier les modifications par email et SMS
-    private void notifyModification(EmploiTempsDto emploiTempsDto) {
+    private void notifyModification(EmploiTemps currentEmploiTemps) {
         System.out.println("Modification détectée dans l'emploi du temps des infirmières !");
         // Exemple d'envoi de notification par email
         emailService.sendEmail("patient@example.com", "Alerte : Notification d'emploi du temps modifié", "Le nouvel emploi du temps est disponible.");

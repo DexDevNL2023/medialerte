@@ -14,7 +14,7 @@ public class EmploiTemps {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nom;
+    private String infirmiere;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_debut")
