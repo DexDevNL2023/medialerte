@@ -3,6 +3,7 @@ package com.medi.alert.service;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,7 @@ public class SmsService {
         Twilio.init(accountSid, authToken);
     }
 
+    @Async
     public void sendSms(String to, String body) {
         Message message = Message.creator(new PhoneNumber(to), new PhoneNumber(twilioNumber), body).create();
         System.out.println("Message sent successfully: " + message.getSid());

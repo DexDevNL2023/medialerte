@@ -77,7 +77,7 @@ public class EmploiTempsMonitor {
     private void notifyModification(EmploiTemps currentEmploiTemps) {
         System.out.println("Modification détectée dans l'emploi du temps des infirmières !");
         // Exemple d'envoi de notification par email
-        emailService.sendEmail("patient@example.com", "Alerte : Notification d'emploi du temps modifié", "Le nouvel emploi du temps est disponible.");
+        emailService.sendEmail("mbasonny@gmail.com", "Alerte : Notification d'emploi du temps modifié", "Le nouvel emploi du temps est disponible.");
         // Exemple d'envoi de notification par SMS via Twilio
         smsService.sendSms("+1234567890", "Alerte : Nouvel emploi du temps disponible.");
     }
