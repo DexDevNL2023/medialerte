@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlerteRepository extends JpaRepository<Alerte, Long> {
-    Alerte findByEmploiTempsId(Long emploiTempsId);
+    Alerte findByRendezVousId(int rendezVousId);
 }

@@ -1,10 +1,10 @@
 package com.medi.alert.service;
 
 import com.medi.alert.entity.Alerte;
-import com.medi.alert.entity.EmploiTemps;
+import com.medi.alert.entity.RendezVous;
 import com.medi.alert.exceptions.ResourceNotFoundException;
 import com.medi.alert.repository.AlerteRepository;
-import com.medi.alert.repository.EmploiTempsRepository;
+import com.medi.alert.repository.RendezVousRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,35 +12,41 @@ import java.util.List;
 @Service
 public class AlerteService {
     private final AlerteRepository alerteRepository;
-    private final EmploiTempsRepository emploiTempsRepository;
+    private final RendezVousRepository rendezVousRepository;
 
-    public AlerteService(AlerteRepository alerteRepository, EmploiTempsRepository emploiTempsRepository) {
+    public AlerteService(AlerteRepository alerteRepository, RendezVousRepository rendezVousRepository) {
         this.alerteRepository = alerteRepository;
-        this.emploiTempsRepository = emploiTempsRepository;
+        this.rendezVousRepository = rendezVousRepository;
     }
 
     public List<Alerte> getAllAlertes() {
         return alerteRepository.findAll();
     }
 
-    public void addAlerte(EmploiTemps dto) {
+    public void addAlerte(RendezVous dto) {
         Alerte alerte = new Alerte();
-        EmploiTemps emploiTemps = new EmploiTemps();
-        emploiTemps.setInfirmiere(dto.getInfirmiere());
-        emploiTemps.setDateDebut(dto.getDateDebut());
-        emploiTemps.setDateFin(dto.getDateFin());
-        alerte.setEmploiTemps(emploiTemps);
+        RendezVous rendezVous = new RendezVous();
+        rendezVous.setId(dto.getId());
+        rendezVous.setPatientId(dto.getPatientId());
+        rendezVous.setInfirmiereId(dto.getInfirmiereId());
+        rendezVous.setJour(dto.getJour());
+        rendezVous.setHeure(dto.getHeure());
+        rendezVous.setEtat(dto.isEtat());
+        rendezVous.setRetard(dto.getRetard());
+        rendezVous.setDateRetard(dto.getDateRetard());
+        rendezVous.setHeureRetard(dto.getHeureRetard());
+        alerte.setRendezVous(rendezVous);
         alerteRepository.save(alerte);
     }
 
-    public void updateAlerte(EmploiTemps dto) {
-        Alerte alerte = alerteRepository.findByEmploiTempsId(dto.getId());
+    public void updateAlerte(RendezVous dto) {
+        Alerte alerte = alerteRepository.findByRendezVousId(dto.getId());
         if (alerte != null) {
-            EmploiTemps emploiTemps = emploiTempsRepository.findById(dto.getId()).orElseThrow(
-                    () -> new ResourceNotFoundException("L'emploi de temps avec l'id " + dto.getId() + " n'existe pas")
+            RendezVous rendezVous = rendezVousRepository.findById(dto.getId()).orElseThrow(
+                    () -> new ResourceNotFoundException("Le Rendez-Vous avec l'id " + dto.getId() + " n'existe pas")
             );
             // Mettre à jour les informations de l'alerte si nécessaire
-            alerte.setEmploiTemps(emploiTemps);
+            alerte.setRendezVous(rendezVous);
             alerteRepository.save(alerte);
         }
     }

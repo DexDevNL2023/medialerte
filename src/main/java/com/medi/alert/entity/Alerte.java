@@ -13,6 +13,9 @@ public class Alerte {
     private Long id;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "emploi_temps_id")
-    private EmploiTemps emploiTemps;
+    @JoinColumn(name = "rendez_vous_id")
+    private RendezVous rendezVous;
+
+    private String title;
+    private String message;
 }
