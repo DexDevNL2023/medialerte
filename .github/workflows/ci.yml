@@ -63,5 +63,3 @@ jobs:
             script: |
               cd public_html/medialert
               java -jar alert-0.0.1-SNAPSHOT.jar
-
-              
